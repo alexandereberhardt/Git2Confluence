@@ -1,0 +1,23 @@
+# _system/passten-config.yaml
+solutions:
+  GFS:
+    gitlab_group_id: 4155
+    gitlab_host: cicd.skyway.porsche.com
+    confluence_space: GFS
+    confluence_parent_id: "2451554935"
+    language: en
+    products:
+      GFS:
+        include_subgroups:
+          - gff-crs
+          - aws-ias-iac
+        exclude_patterns:
+          - gfs-cls
+          - pda-poc
+          - gfs-to-cloud-test
+          - flow-foblex
+          - multirepo-agent
+          - ipc-client
+        min_activity: "2025-06-01"
+      PDA:
+        subgroup_id: 75593
