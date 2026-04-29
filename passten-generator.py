@@ -2,9 +2,9 @@
 """passten-generator.py - Generate PASSTEN documentation from GitLab repos.
 
 Usage:
-    python3 _system/passten-generator.py generate --solution GFS
-    python3 _system/passten-generator.py extract --solution GFS --output extraction.json
-    python3 _system/passten-generator.py publish --input extraction.json
+    python3 passten-generator.py generate --solution GFS
+    python3 passten-generator.py extract --solution GFS --output extraction.json
+    python3 passten-generator.py publish --input passten-pages-full.json --solution GFS
 """
 import argparse
 import json

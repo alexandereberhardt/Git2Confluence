@@ -1,4 +1,3 @@
-# _system/passten/templates.py
 from dataclasses import dataclass, field
 
 @dataclass

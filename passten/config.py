@@ -1,4 +1,3 @@
-# _system/passten/config.py
 import yaml
 
 def load_config(path: str) -> dict:

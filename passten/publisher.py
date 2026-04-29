@@ -1,4 +1,3 @@
-# _system/passten/publisher.py
 import json
 import urllib.request
 

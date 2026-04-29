@@ -1,4 +1,3 @@
-# _system/passten/synthesizer.py
 from datetime import date
 import anthropic
 from passten.templates import Section

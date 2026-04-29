@@ -1,4 +1,3 @@
-# _system/passten/extractor.py
 import json
 import os
 import ssl
