@@ -93,6 +93,13 @@ def synthesize(extraction: dict, config: dict, solution_name: str) -> dict:
     return pages
 
 
+def _confluence_title(title: str) -> str:
+    section = get_section(title)
+    if section and section.auto_generated:
+        return f"{title} 🤖"
+    return title
+
+
 def publish(pages: dict, config: dict, solution_name: str):
     solution = get_solution(config, solution_name)
     space_key = solution['confluence_space']
@@ -105,10 +112,11 @@ def publish(pages: dict, config: dict, solution_name: str):
 
     def publish_node(node: dict, parent_id: str):
         title = node['title']
+        confluence_title = _confluence_title(title)
         body = pages.get(title, '')
-        print(f"  Publishing: {title}")
+        print(f"  Publishing: {confluence_title}")
         result = pub.upsert_page(space_key=space_key, parent_id=parent_id,
-                                 title=title, body=body)
+                                 title=confluence_title, body=body)
         page_id = result.get('id', '')
         created_ids[title] = page_id
         for child in node.get('children', []):
