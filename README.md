@@ -27,19 +27,35 @@ pip install -r passten/requirements.txt
 
 ## Usage
 
-### Full pipeline (extract + synthesize + publish)
+Before any publish command, make sure mcporsche is running:
 
 ```bash
+cd ~/workspace/mcporsche && docker compose up -d
+```
+
+### Option A: Full pipeline (requires ANTHROPIC_API_KEY)
+
+```bash
+export ANTHROPIC_API_KEY=sk-...
 python3 passten-generator.py generate --solution GFS
 ```
 
-### Extract only (save to JSON)
+### Option B: Manual workflow with Claude Code
 
 ```bash
+# 1. Extract repo data
 python3 passten-generator.py extract --solution GFS --output gfs-extraction.json
+
+# 2. Open Claude Code, let it read gfs-extraction.json,
+#    generate page content, and save as passten-pages-full.json
+
+# 3. Publish the generated pages
+python3 passten-generator.py publish --input passten-pages-full.json --solution GFS
 ```
 
-### Publish from pre-generated pages JSON
+### Option C: Re-publish from cache
+
+If you already have a `passten-pages-full.json` from a previous run:
 
 ```bash
 python3 passten-generator.py publish --input passten-pages-full.json --solution GFS
