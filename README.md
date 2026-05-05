@@ -10,7 +10,7 @@ Three-stage pipeline:
 2. **Synthesize** — Generates structured documentation using Claude API
 3. **Publish** — Creates/updates Confluence pages via MCP server
 
-Auto-generated pages get a 🤖 suffix in their title. Placeholder pages (requiring manual input) stay clean.
+Auto-generated pages get a 🤖 suffix. Placeholder pages (requiring manual input) get a ✍️ suffix.
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ python3 passten-generator.py publish --input passten-pages-full.json --solution 
 
 ## Configuration
 
-Edit `passten-config.yaml`:
+Edit `passten-config.yaml` to add solutions:
 
 ```yaml
 solutions:
@@ -82,6 +82,16 @@ solutions:
         min_activity: "2025-06-01"
       PDA:
         subgroup_id: 75593
+
+  AnotherSolution:
+    gitlab_group_id: 1234
+    gitlab_host: cicd.skyway.porsche.com
+    confluence_space: MYSPC
+    confluence_parent_id: "9876543210"
+    language: en
+    products:
+      MyProduct:
+        subgroup_id: 5678
 ```
 
 | Field | Description |
@@ -93,40 +103,57 @@ solutions:
 | `products` | Map of product names to repo discovery config |
 | `min_activity` | Ignore repos with no commits after this date |
 | `exclude_patterns` | Repo name substrings to skip |
+| `include_subgroups` | Only include repos from these subgroups |
 | `subgroup_id` | Discover repos from a specific subgroup instead |
 
 ## Page Structure (PASSTEN Template)
 
-The generated hierarchy follows the Porsche PASSTEN standard:
+The generated hierarchy follows the Porsche PASSTEN standard (34 pages, 3 levels deep). The root page title is derived from the solution name (e.g., "GFS Digital Solution Home"):
 
 ```
-Digital Solution Home 🤖
-├── Vision
+{Solution} Digital Solution Home 🤖
+├── Vision ✍️
 ├── Roadmap 🤖
-├── Roles
+├── Roles ✍️
 ├── Digital Solution Intent 🤖
 │   ├── Architecture 🤖
 │   ├── Compliance 🤖
+│   │   ├── Authentication 🤖
+│   │   ├── Authorizations 🤖
+│   │   ├── Cryptographic Processes and Technologies 🤖
+│   │   ├── Vulnerability and Patch Management 🤖
+│   │   ├── System Hardening 🤖
+│   │   └── Artificial Intelligence 🤖
 │   ├── Data 🤖
+│   │   ├── Data Protection 🤖
+│   │   ├── Data Deletion & Shutdown 🤖
+│   │   ├── Data Backup and Restore 🤖
+│   │   └── Data Storage / Filing 🤖
 │   ├── Functional 🤖
 │   ├── Test Concept 🤖
 │   ├── Test Evidences 🤖
-│   ├── KPIs
-│   └── Accessibility
-└── Service Management
+│   ├── KPIs ✍️
+│   └── Accessibility ✍️
+└── Service Management 🤖
     ├── Software Development Culture 🤖
     ├── Deployment 🤖
     ├── Logging and Monitoring 🤖
     ├── Change Management 🤖
     ├── Configuration Management 🤖
-    ├── Incident Management
-    ├── Problem Management
-    ├── Service Level Management
-    ├── Support / Maintenance
-    └── User Documentation
+    ├── Incident Management ✍️
+    ├── Problem Management ✍️
+    ├── Service Level Management ✍️
+    ├── Support / Maintenance ✍️
+    └── User Documentation ✍️
 ```
 
-🤖 = auto-generated from code | no suffix = requires manual input
+🤖 = auto-generated from code | ✍️ = placeholder requiring manual input
+
+## Adding a New Solution
+
+1. Add the solution to `passten-config.yaml` with GitLab group, Confluence space, and parent page ID
+2. Run `python3 passten-generator.py generate --solution YourSolution`
+3. All 34 pages are created under the specified parent page in Confluence
 
 ## Architecture
 
