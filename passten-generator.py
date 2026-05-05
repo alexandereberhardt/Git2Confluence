@@ -18,7 +18,7 @@ from passten.config import load_config, get_solution
 from passten.extractor import GitLabExtractor
 from passten.synthesizer import Synthesizer
 from passten.publisher import ConfluencePublisher, AUTO_GENERATED_MARKER
-from passten.templates import PASSTEN_HIERARCHY, get_section, SECTIONS
+from passten.templates import PASSTEN_HIERARCHY, get_section, SECTIONS, build_hierarchy
 
 DEFAULT_CONFIG = os.path.join(SCRIPT_DIR, 'passten-config.yaml')
 
@@ -82,8 +82,17 @@ def synthesize(extraction: dict, config: dict, solution_name: str) -> dict:
     for product in extraction['products'].values():
         all_repos.extend(product['repos'])
 
+    hierarchy = build_hierarchy(solution_name)
+    titles_needed = _collect_titles(hierarchy)
+
     pages = {}
-    for title, section in SECTIONS.items():
+    for title in titles_needed:
+        section = get_section(title)
+        if not section:
+            section = get_section('Digital Solution Home') if title.endswith('Digital Solution Home') else None
+        if not section:
+            print(f"  Skipping: {title} (no section definition)")
+            continue
         print(f"  Generating: {title}...")
         if section.placeholder:
             pages[title] = synth.generate_placeholder(section)
@@ -93,10 +102,22 @@ def synthesize(extraction: dict, config: dict, solution_name: str) -> dict:
     return pages
 
 
+def _collect_titles(node: dict) -> list[str]:
+    """Recursively collect all titles from the hierarchy tree."""
+    titles = [node['title']]
+    for child in node.get('children', []):
+        titles.extend(_collect_titles(child))
+    return titles
+
+
 def _confluence_title(title: str) -> str:
     section = get_section(title)
+    if not section and title.endswith('Digital Solution Home'):
+        section = get_section('Digital Solution Home')
     if section and section.auto_generated:
         return f"{title} 🤖"
+    if section and section.placeholder:
+        return f"{title} ✍️"
     return title
 
 
@@ -108,6 +129,7 @@ def publish(pages: dict, config: dict, solution_name: str):
     pub = ConfluencePublisher()
     pub._initialize()
 
+    hierarchy = build_hierarchy(solution_name)
     created_ids = {}
 
     def publish_node(node: dict, parent_id: str):
@@ -122,7 +144,7 @@ def publish(pages: dict, config: dict, solution_name: str):
         for child in node.get('children', []):
             publish_node(child, page_id)
 
-    publish_node(PASSTEN_HIERARCHY, root_parent_id)
+    publish_node(hierarchy, root_parent_id)
     print(f"\n  Published {len(created_ids)} pages.")
     return created_ids
 

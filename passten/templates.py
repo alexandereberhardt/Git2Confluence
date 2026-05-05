@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 
+
 @dataclass
 class Section:
     title: str
@@ -8,9 +9,10 @@ class Section:
     guiding_questions: list[str] = field(default_factory=list)
     sources: list[str] = field(default_factory=list)
 
+
 SECTIONS: dict[str, Section] = {
-    'GFS Digital Solution Home': Section(
-        title='GFS Digital Solution Home',
+    'Digital Solution Home': Section(
+        title='Digital Solution Home',
         auto_generated=True,
         sources=['README.md', 'repo_metadata'],
         guiding_questions=['What is the name and purpose of this Digital Solution?',
@@ -24,7 +26,10 @@ SECTIONS: dict[str, Section] = {
         sources=['CHANGELOG.md', 'git_tags'],
         guiding_questions=['What are the key milestones and releases?']),
     'Roles': Section(title='Roles', placeholder=True,
-        guiding_questions=['Who are the key roles and team members?']),
+        guiding_questions=['Who are the key roles and team members?',
+                          'What are their responsibilities?']),
+
+    # --- Digital Solution Intent ---
     'Digital Solution Intent': Section(title='Digital Solution Intent', auto_generated=True,
         sources=['README.md'],
         guiding_questions=['What is the current and planned behavior of the solution?']),
@@ -37,10 +42,61 @@ SECTIONS: dict[str, Section] = {
         sources=['dependencies', 'security_configs'],
         guiding_questions=['What FOSS components are used?',
                           'How are security requirements addressed?']),
+    'Authentication': Section(title='Authentication', auto_generated=True,
+        sources=['security_configs', 'terraform', 'openapi'],
+        guiding_questions=['How do users and services authenticate?',
+                          'What identity providers are integrated?',
+                          'How are tokens managed?']),
+    'Authorizations': Section(title='Authorizations', auto_generated=True,
+        sources=['security_configs', 'terraform', 'iam_policies'],
+        guiding_questions=['How is access control implemented?',
+                          'What roles and permissions exist?',
+                          'How is least privilege enforced?']),
+    'Cryptographic Processes and Technologies': Section(
+        title='Cryptographic Processes and Technologies', auto_generated=True,
+        sources=['security_configs', 'terraform'],
+        guiding_questions=['What encryption is used at rest and in transit?',
+                          'How are secrets and keys managed?']),
+    'Vulnerability and Patch Management': Section(
+        title='Vulnerability and Patch Management', auto_generated=True,
+        sources=['dependencies', 'ci_security_stages'],
+        guiding_questions=['How are vulnerabilities detected and remediated?',
+                          'What scanning tools are in use?',
+                          'What is the patching cadence?']),
+    'System Hardening': Section(title='System Hardening', auto_generated=True,
+        sources=['Dockerfile', 'terraform', 'security_configs'],
+        guiding_questions=['How are systems hardened?',
+                          'What base images are used?',
+                          'What network restrictions are in place?']),
+    'Artificial Intelligence': Section(title='Artificial Intelligence', auto_generated=True,
+        sources=['README.md', 'dependencies', 'ai_configs'],
+        guiding_questions=['What AI/ML components are used?',
+                          'How are models deployed and monitored?',
+                          'What data is used for training/inference?']),
     'Data': Section(title='Data', auto_generated=True,
         sources=['db_migrations', 'terraform_storage'],
         guiding_questions=['What data is processed, created, and stored?',
                           'What databases and storage systems are used?']),
+    'Data Protection': Section(title='Data Protection', auto_generated=True,
+        sources=['db_migrations', 'terraform_storage', 'security_configs'],
+        guiding_questions=['What personal data is processed?',
+                          'How is data protection ensured (GDPR, DSGVO)?',
+                          'What technical and organizational measures are in place?']),
+    'Data Deletion & Shutdown': Section(title='Data Deletion & Shutdown', auto_generated=True,
+        sources=['db_migrations', 'terraform_storage'],
+        guiding_questions=['How is data deleted when no longer needed?',
+                          'What retention policies exist?',
+                          'What is the shutdown/decommissioning process?']),
+    'Data Backup and Restore': Section(title='Data Backup and Restore', auto_generated=True,
+        sources=['terraform_storage', 'backup_configs'],
+        guiding_questions=['How are backups created and stored?',
+                          'What is the backup frequency and retention?',
+                          'How is restore tested?']),
+    'Data Storage / Filing': Section(title='Data Storage / Filing', auto_generated=True,
+        sources=['terraform_storage', 'db_migrations'],
+        guiding_questions=['Where is data physically stored?',
+                          'What storage services and regions are used?',
+                          'What archival policies exist?']),
     'Functional': Section(title='Functional', auto_generated=True,
         sources=['README.md', 'openapi'],
         guiding_questions=['What are the key functionalities?',
@@ -53,9 +109,17 @@ SECTIONS: dict[str, Section] = {
         sources=['ci_pipelines'],
         guiding_questions=['Where can test results be found?']),
     'KPIs': Section(title='KPIs', placeholder=True,
-        guiding_questions=['What are the key performance indicators?']),
+        guiding_questions=['What are the key performance indicators?',
+                          'How are they measured and reported?']),
     'Accessibility': Section(title='Accessibility', placeholder=True,
-        guiding_questions=['How are accessibility requirements addressed?']),
+        guiding_questions=['How are accessibility requirements addressed?',
+                          'What standards are followed (WCAG, BITV)?']),
+
+    # --- Service Management ---
+    'Service Management': Section(title='Service Management', auto_generated=True,
+        sources=['gitlab_ci', 'monitoring_configs'],
+        guiding_questions=['How is the solution operated in production?',
+                          'What operational processes are in place?']),
     'Software Development Culture': Section(title='Software Development Culture', auto_generated=True,
         sources=['gitlab_ci', 'merge_request_settings'],
         guiding_questions=['What branching strategy is used?',
@@ -77,27 +141,43 @@ SECTIONS: dict[str, Section] = {
         sources=['terraform', 'helm_values', 'env_configs'],
         guiding_questions=['How is configuration managed across environments?']),
     'Incident Management': Section(title='Incident Management', placeholder=True,
-        guiding_questions=['How are incidents detected and resolved?']),
+        guiding_questions=['How are incidents detected and resolved?',
+                          'What escalation paths exist?']),
     'Problem Management': Section(title='Problem Management', placeholder=True,
         guiding_questions=['How are recurring problems identified and addressed?']),
     'Service Level Management': Section(title='Service Level Management', placeholder=True,
-        guiding_questions=['What SLAs/SLOs are defined?']),
+        guiding_questions=['What SLAs/SLOs are defined?',
+                          'How are they monitored?']),
     'Support / Maintenance': Section(title='Support / Maintenance', placeholder=True,
-        guiding_questions=['What maintenance tasks are performed regularly?']),
+        guiding_questions=['What maintenance tasks are performed regularly?',
+                          'How is support organized?']),
     'User Documentation': Section(title='User Documentation', placeholder=True,
-        guiding_questions=['Where can end-users find documentation?']),
+        guiding_questions=['Where can end-users find documentation?',
+                          'What formats are available?']),
 }
 
 PASSTEN_HIERARCHY = {
-    'title': 'GFS Digital Solution Home',
+    'title': 'Digital Solution Home',
     'children': [
         {'title': 'Vision'},
         {'title': 'Roadmap'},
         {'title': 'Roles'},
         {'title': 'Digital Solution Intent', 'children': [
             {'title': 'Architecture'},
-            {'title': 'Compliance'},
-            {'title': 'Data'},
+            {'title': 'Compliance', 'children': [
+                {'title': 'Authentication'},
+                {'title': 'Authorizations'},
+                {'title': 'Cryptographic Processes and Technologies'},
+                {'title': 'Vulnerability and Patch Management'},
+                {'title': 'System Hardening'},
+                {'title': 'Artificial Intelligence'},
+            ]},
+            {'title': 'Data', 'children': [
+                {'title': 'Data Protection'},
+                {'title': 'Data Deletion & Shutdown'},
+                {'title': 'Data Backup and Restore'},
+                {'title': 'Data Storage / Filing'},
+            ]},
             {'title': 'Functional'},
             {'title': 'Test Concept'},
             {'title': 'Test Evidences'},
@@ -119,5 +199,14 @@ PASSTEN_HIERARCHY = {
     ],
 }
 
+
 def get_section(title: str) -> Section | None:
     return SECTIONS.get(title)
+
+
+def build_hierarchy(solution_name: str) -> dict:
+    """Build the hierarchy tree with solution-specific root title."""
+    import copy
+    tree = copy.deepcopy(PASSTEN_HIERARCHY)
+    tree['title'] = f"{solution_name} Digital Solution Home"
+    return tree
