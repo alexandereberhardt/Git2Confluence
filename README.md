@@ -37,28 +37,28 @@ cd ~/workspace/mcporsche && docker compose up -d
 
 ```bash
 export ANTHROPIC_API_KEY=sk-...
-python3 passten-generator.py generate --solution GFS
+python3 passten-generator.py generate --solution <SOLUTION_NAME>
 ```
 
 ### Option B: Manual workflow with Claude Code
 
 ```bash
 # 1. Extract repo data
-python3 passten-generator.py extract --solution GFS --output gfs-extraction.json
+python3 passten-generator.py extract --solution <SOLUTION_NAME> --output extraction.json
 
-# 2. Open Claude Code, let it read gfs-extraction.json,
-#    generate page content, and save as passten-pages-full.json
+# 2. Open Claude Code, let it read extraction.json,
+#    generate page content, and save as pages.json
 
 # 3. Publish the generated pages
-python3 passten-generator.py publish --input passten-pages-full.json --solution GFS
+python3 passten-generator.py publish --input pages.json --solution <SOLUTION_NAME>
 ```
 
 ### Option C: Re-publish from cache
 
-If you already have a `passten-pages-full.json` from a previous run:
+If you already have a pages JSON from a previous run:
 
 ```bash
-python3 passten-generator.py publish --input passten-pages-full.json --solution GFS
+python3 passten-generator.py publish --input pages.json --solution <SOLUTION_NAME>
 ```
 
 ## Configuration
@@ -67,30 +67,22 @@ Edit `passten-config.yaml` to add solutions:
 
 ```yaml
 solutions:
-  GFS:
-    gitlab_group_id: 4155
-    gitlab_host: cicd.skyway.porsche.com
-    confluence_space: GFS
-    confluence_parent_id: "2451554935"
-    language: en
-    products:
-      GFS:
-        include_subgroups:
-          - gff-crs
-        exclude_patterns:
-          - gfs-cls
-        min_activity: "2025-06-01"
-      PDA:
-        subgroup_id: 75593
-
-  AnotherSolution:
+  MySolution:
     gitlab_group_id: 1234
     gitlab_host: cicd.skyway.porsche.com
     confluence_space: MYSPC
     confluence_parent_id: "9876543210"
     language: en
     products:
-      MyProduct:
+      ProductA:
+        include_subgroups:
+          - backend
+          - frontend
+        exclude_patterns:
+          - playground
+          - archived-
+        min_activity: "2025-06-01"
+      ProductB:
         subgroup_id: 5678
 ```
 
@@ -108,7 +100,7 @@ solutions:
 
 ## Page Structure (PASSTEN Template)
 
-The generated hierarchy follows the Porsche PASSTEN standard (34 pages, 3 levels deep). The root page title is derived from the solution name (e.g., "GFS Digital Solution Home"):
+The generated hierarchy follows the Porsche PASSTEN standard (34 pages, 3 levels deep). The root page title is derived from the solution name:
 
 ```
 {Solution} Digital Solution Home
