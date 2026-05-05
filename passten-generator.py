@@ -111,13 +111,6 @@ def _collect_titles(node: dict) -> list[str]:
 
 
 def _confluence_title(title: str) -> str:
-    section = get_section(title)
-    if not section and title.endswith('Digital Solution Home'):
-        section = get_section('Digital Solution Home')
-    if section and section.auto_generated:
-        return f"{title} 🤖"
-    if section and section.placeholder:
-        return f"{title} ✍️"
     return title
 
 

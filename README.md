@@ -10,7 +10,7 @@ Three-stage pipeline:
 2. **Synthesize** — Generates structured documentation using Claude API
 3. **Publish** — Creates/updates Confluence pages via MCP server
 
-Auto-generated pages get a 🤖 suffix. Placeholder pages (requiring manual input) get a ✍️ suffix.
+Pages are generated based on what can be derived from the Git repositories. Pages without sufficient source data are created as placeholders for manual input.
 
 ## Prerequisites
 
@@ -111,43 +111,41 @@ solutions:
 The generated hierarchy follows the Porsche PASSTEN standard (34 pages, 3 levels deep). The root page title is derived from the solution name (e.g., "GFS Digital Solution Home"):
 
 ```
-{Solution} Digital Solution Home 🤖
-├── Vision ✍️
-├── Roadmap 🤖
-├── Roles ✍️
-├── Digital Solution Intent 🤖
-│   ├── Architecture 🤖
-│   ├── Compliance 🤖
-│   │   ├── Authentication 🤖
-│   │   ├── Authorizations 🤖
-│   │   ├── Cryptographic Processes and Technologies 🤖
-│   │   ├── Vulnerability and Patch Management 🤖
-│   │   ├── System Hardening 🤖
-│   │   └── Artificial Intelligence 🤖
-│   ├── Data 🤖
-│   │   ├── Data Protection 🤖
-│   │   ├── Data Deletion & Shutdown 🤖
-│   │   ├── Data Backup and Restore 🤖
-│   │   └── Data Storage / Filing 🤖
-│   ├── Functional 🤖
-│   ├── Test Concept 🤖
-│   ├── Test Evidences 🤖
-│   ├── KPIs ✍️
-│   └── Accessibility ✍️
-└── Service Management 🤖
-    ├── Software Development Culture 🤖
-    ├── Deployment 🤖
-    ├── Logging and Monitoring 🤖
-    ├── Change Management 🤖
-    ├── Configuration Management 🤖
-    ├── Incident Management ✍️
-    ├── Problem Management ✍️
-    ├── Service Level Management ✍️
-    ├── Support / Maintenance ✍️
-    └── User Documentation ✍️
+{Solution} Digital Solution Home
+├── Vision
+├── Roadmap
+├── Roles
+├── Digital Solution Intent
+│   ├── Architecture
+│   ├── Compliance
+│   │   ├── Authentication
+│   │   ├── Authorizations
+│   │   ├── Cryptographic Processes and Technologies
+│   │   ├── Vulnerability and Patch Management
+│   │   ├── System Hardening
+│   │   └── Artificial Intelligence
+│   ├── Data
+│   │   ├── Data Protection
+│   │   ├── Data Deletion & Shutdown
+│   │   ├── Data Backup and Restore
+│   │   └── Data Storage / Filing
+│   ├── Functional
+│   ├── Test Concept
+│   ├── Test Evidences
+│   ├── KPIs
+│   └── Accessibility
+└── Service Management
+    ├── Software Development Culture
+    ├── Deployment
+    ├── Logging and Monitoring
+    ├── Change Management
+    ├── Configuration Management
+    ├── Incident Management
+    ├── Problem Management
+    ├── Service Level Management
+    ├── Support / Maintenance
+    └── User Documentation
 ```
-
-🤖 = auto-generated from code | ✍️ = placeholder requiring manual input
 
 ## Adding a New Solution
 
